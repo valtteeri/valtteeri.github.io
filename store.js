@@ -234,7 +234,7 @@ function manageQuantity() {
     for(let i = 0; i < increaseButtons.length; i++) {
         increaseButtons[i].addEventListener('click', ()=>{
             currentQuantity = increaseButtons[i].parentElement.querySelector('span').textContent;
-            currentProduct = increaseButtons[i].parentElement.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLowerCase().replace(/ /g , '');
+            currentProduct = increaseButtons[i].parentElement.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLowerCase().replace(/ /g , '');
             console.log(currentProduct);
             
                 cartItems[currentProduct].inCart += 1;
