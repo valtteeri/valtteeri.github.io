@@ -220,7 +220,7 @@ function manageQuantity() {
     for(let i = 0; i < decreaseButtons.length; i++) {
         decreaseButtons[i].addEventListener('click', ()=>{
             currentQuantity = decreaseButtons[i].parentElement.querySelector('span').textContent;
-            currentProduct = decreaseButtons[i].parentElement.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLowerCase().replace(/ /g , '');
+            currentProduct = decreaseButtons[i].parentElement.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLowerCase().replace(/ /g , '');
             console.log(currentProduct);
             if( cartItems[currentProduct].inCart > 1){
                 cartItems[currentProduct].inCart -= 1;
