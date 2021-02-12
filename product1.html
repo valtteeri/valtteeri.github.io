@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SmartLights | Shop</title>
+        <meta name="description" content="This is the description">
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="fontawesome-free-5.15.1-web/css/all.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <script src="store.js" async></script>
+        <script src="jquery-3.5.1.min.js"></script>
+        
+        
+
+    </head>
+    <body>
+        <header class="main-header">
+            <div class="container">
+                <div class="navbar">
+                    <div class="logo">
+                        <img src="logo.png" width="125px">
+                    </div>
+                    <nav>
+                    <ul id="MenuItems">
+                        <li><a href="D:\html\Projekt\Website.html">Home</a></li>
+                        <li><a href="D:\html\Projekt\productpage.html">Products</a></li>
+                        <li><a href="">About us</a></li>
+                        <li><a href="">Support</a></li>
+                        <li><a href="">Account</a></li>
+                    </ul>
+                    </nav>
+                    <a href="cart.html" class="cartnum"><img src="Cart.png" width="30px" height="30px"><span>0</span></a>
+                </div>
+            </div>
+        </header>
+
+    
+        <div class="small-container single-product">
+            <div class="row">
+                <div class="header-top">
+                    <img src="Leaf.jpeg">
+                </div>
+                <div class="header-top">
+                    <p>Home / NanoLeaf</p>
+                    <h1>NanoLeaf<br> Light Panels Smarter kit Rhythm Edition</h1>
+                    <p class="product1price">120.00€</p>
+                    <select>
+                        <option>Select Panel Amount</option>
+                        <option>4</option>
+                        <option>9</option>
+                        <option>15</option>
+                    </select>
+                    <input type="number" value="1">
+                    <a href="" class="Button1">Add To Cart</a>
+                    <h3>Product Details</h3>
+                    <p><i class="far fa-circle"></i> &nbsp; Create a stunning audiovisual lightshow in your home with the Nanoleaf Rhythm.<br>
+                        <i class="far fa-circle"></i> &nbsp; Connect the triangular colour-changing LED panels together and mount them with the included adhesive pads.<br>
+                        <i class="far fa-circle"></i> &nbsp; The Rhythm module recognizes music so the panels change colour in time with the rhythm, and you can also use the app or voice control to make your own shows.</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="small-container">
+            <h2 class="title">Featured Products</h2>
+            <div class="row">
+                <div class="items">
+                <img src="gu10.png">
+                <h5>Philips Hue White and Colour Ambiance Starter kit GU10</h5>
+                <p>142.00€</p>
+                <button>Add to cart</button>
+                </div>
+                <div class="items">
+                <img src="panels.png">
+                <h5>NanoLeaf Light Panels Smarter kit Rhythm Edition</h5>
+                <p>120.00€</p>
+                <button>Add to cart</button>
+                </div>
+                <div class="items">
+                <img src="lightstrips.png">
+                <h5>Philips Hue<br>Lightstrips Plus</h5>
+                <p>69.90€</p>
+                <button>Add to cart</button>
+                </div>
+                <div id="meme" class="items items2">
+                    <img src="lamp.png">
+                    <h5><a href="">WiZ Smart lamp E27, Tunable white</a></h5>
+                    <p class="price">
+                        17.90€
+                    </p>
+                    <button>Add to cart</button>
+                    <audio id="myAudio" preload="auto">
+                        <source src="widelamp.ogg" type="audio/ogg">
+                        <source src="widelamp.mp3" type="audio/mpeg">
+                      </audio>
+                     <script>
+                         document.getElementById("myAudio").volume = 0.05;
+                         var audio = $("#myAudio")[0];
+                         $('.items2').on({
+                        mouseenter: function() {
+                         audio.play();
+                            },
+                        mouseleave: function() {
+                         audio.pause();
+                         audio.currentTime = 0;
+                          }       
+            });
+                     </script>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="footer1">
+                            <img src="logo.png">
+                            <p>We premier in modern smart lightning systems</p>
+                        </div>
+                        <div class="footer2">
+                            <h3> Useful Links</h3>
+                            <ul>
+                                <li>Coupons</li>
+                                <li>Return Policy</li>
+                                <li>Blog Posts</li>
+                            </ul>
+                        </div>
+                        <div class="footer3">
+                            <h3 class = "footerTitle"> Follow us</h3>
+                            <ul>
+                                <li>
+                                    <a href=""><i class="fab fa-twitter-square fa-2x"></i></a>
+                                    <a href=""><i class="fab fa-facebook-square fa-2x"></i></a>
+                                    <a href=""><i class="fab fa-instagram fa-2x"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <p class="Copyright">Copyright 2020 - Valtteri Hietala & Erik Myllylä</p>
+                </div>
+            </div>
+    </body>
+</html>
