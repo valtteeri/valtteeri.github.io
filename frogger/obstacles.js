@@ -45,12 +45,12 @@ function initObstacles(){
     //First lane settings
     for(let i = 0; i < 2; i++){
         let x = i * 350;
-        carsArray.push(new Obstacle(x, canvas.height - grid * 2 - 20, grid * 2, grid, 2, 'car'));
+        carsArray.push(new Obstacle(x, canvas.height - grid * 2 - 20, grid * 2, grid, 3, 'car'));
     }
     //Second lane settings
     for(let i = 0; i < 2; i++){
         let x = i * 300;
-        carsArray.push(new Obstacle(x, canvas.height - grid * 3 - 20, grid * 2, grid, -1.5, 'car'));
+        carsArray.push(new Obstacle(x, canvas.height - grid * 3 - 20, grid * 2, grid, -2.5, 'car'));
     }
     //Third lane settings
     for(let i = 0; i < 2; i++){
@@ -60,12 +60,12 @@ function initObstacles(){
     //Fourth lane settings
     for(let i = 0; i < 2; i++){
         let x = i * 400;
-        logsArray.push(new Obstacle(x, canvas.height - grid * 5 - 20, grid * 2, grid, -2, 'log'));
+        logsArray.push(new Obstacle(x, canvas.height - grid * 5 - 20, grid * 2, grid, -3, 'log'));
     }
     //Fifth lane settings
     for(let i = 0; i < 3; i++){
         let x = i * 200;
-        logsArray.push(new Obstacle(x, canvas.height - grid * 6 - 20, grid, grid, 1, 'turtle'));
+        logsArray.push(new Obstacle(x, canvas.height - grid * 6 - 20, grid, grid, 2, 'turtle'));
     }
 }
 initObstacles();
