@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas Frogger</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas {
+      border: 1px solid whitesmoke;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="froggerCanvas" width="620" height="620"></canvas>
+  <script>
+    const canvas = document.getElementById('froggerCanvas');
+    const context = canvas.getContext('2d');
+
+    const grid = 48;
+
+    // Frog
+    const frog = {
+      x: grid * 6,
+      y: grid * 12,
+      size: 30,
+      color: 'darkgreen',
+      draw: function() {
+        context.fillStyle = this.color;
+        context.fillRect(this.x, this.y, this.size, this.size);
+      }
+    };
+
+    // Car object
+    function Car(x, y, width, height, color, speed, direction) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.color = color;
+      this.speed = speed;
+      this.direction = direction;
+    }
+
+    // Trees
+    function TreeTrunk(x, y, width, height, color, speed, direction) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.color = color;
+      this.speed = speed;
+      this.direction = direction;
+    }
+
+    // Turtles
+    function Turtle(x, y, width, height, color, speed, direction) {
+      this.x = x;
+      this.y = y;
+      this.width = width;
+      this.height = height;
+      this.color = color;
+      this.speed = speed;
+      this.direction = direction;
+    }
+
+
+    // Safezone
+    const safeZones = [
+      { x: 0, y: grid * 12, width: canvas.width, height: grid },
+      { x: 0, y: grid * 6, width: canvas.width, height: grid }
+    ];
+
+    //Goals
+    const endZones = [
+      { x: grid * 1, y: 0, width: grid, height: grid },
+      { x: grid * 4, y: 0, width: grid, height: grid },
+      { x: grid * 8, y: 0, width: grid, height: grid },
+      { x: grid * 11, y: 0, width: grid, height: grid }
+    ];
+
+    // Waterzone
+    const waterZones = [
+      { x: 0, y: grid * 1, width: canvas.width, height: grid },
+      { x: 0, y: grid * 2, width: canvas.width, height: grid },
+      { x: 0, y: grid * 3, width: canvas.width, height: grid },
+      { x: 0, y: grid * 4, width: canvas.width, height: grid },
+      { x: 0, y: grid * 5, width: canvas.width, height: grid },
+      { x: 0, y: grid * 0, width: canvas.width, height: grid }
+    ];
+
+    const treeTrunks = [];
+    function initTreeTrunks() {
+      for (let i = 0; i < 3; i++) {
+        treeTrunks.push(new TreeTrunk(grid * i * 4, grid * 5, 80, 30, 'brown', 2, 'left'));
+        treeTrunks.push(new TreeTrunk(grid * i * 4, grid * 3, 90, 30, 'brown', 2.5, 'left'));
+        treeTrunks.push(new TreeTrunk(grid * i * 4, grid * 1, 90, 30, 'brown', 1.5, 'left'));
+      }
+    }
+
+    const turtles = [];
+    function initTurtles() {
+      for (let i = 0; i < 5; i++) {
+        turtles.push(new Turtle(grid * i * 3, grid * 2, 50, 30, 'green', 2.5, 'right'));
+        turtles.push(new Turtle(grid * i * 3, grid * 4, 50, 30, 'green', 1.7, 'right'));
+      }
+    }
+
+    const cars = [];
+    function initCars() {
+      for (let i = 0; i < 3; i++) {
+        cars.push(new Car(grid * i * 4, grid * 7, 40, 30, 'red', 3, 'left'));
+        cars.push(new Car(grid * i * 4, grid * 8, 40, 30, 'red', 1.5, 'right'));
+        cars.push(new Car(grid * i * 4, grid * 9, 40, 30, 'red', 2, 'left'));
+        cars.push(new Car(grid * i * 4, grid * 10, 40, 30, 'red', 1, 'right'));
+        cars.push(new Car(grid * i * 4, grid * 11, 40, 30, 'red', 3, 'left'));
+      }
+    }
+
+
+    function draw() {
+      // Clear canvas and draw the objects
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      safeZones.forEach(zone => {
+        context.fillStyle = 'purple';
+        context.fillRect(zone.x, zone.y, zone.width, zone.height);
+      });
+
+      waterZones.forEach(zone => {
+        context.fillStyle = 'blue';
+        context.fillRect(zone.x, zone.y, zone.width, zone.height);
+      });
+
+      endZones.forEach(zone =>{
+        context.fillStyle = "green"
+        context.fillRect(zone.x, zone.y, zone.width, zone.height)
+      });
+
+      treeTrunks.forEach(trunk => {
+        context.fillStyle = trunk.color;
+        context.fillRect(trunk.x, trunk.y, trunk.width, trunk.height);
+      });
+
+      turtles.forEach(turtle => {
+        context.fillStyle = turtle.color;
+        context.fillRect(turtle.x, turtle.y, turtle.width, turtle.height);
+      });
+
+      cars.forEach(function(car) {
+        context.fillStyle = car.color;
+        context.fillRect(car.x, car.y, car.width, car.height);
+      });
+
+      frog.draw();
+      objectmovement();
+    }
+
+    // Make movement for car and trunk, check collisions
+    function objectmovement() {
+      cars.forEach(car => {
+        moveObject(car);
+      });
+      treeTrunks.forEach(trunk => {
+        moveObject(trunk);
+      });
+      turtles.forEach(turtle => {
+        moveObject(turtle);
+      });
+
+      moveFrogWithObjects();
+      checkCollision();
+    }
+
+    //Frog moves ontop of turtle/trunk
+    function moveFrogWithObjects() {
+      let onTrunk = false;
+      let onTurtle = false;
+
+      // Check if the frog is on a trunk
+      treeTrunks.forEach(trunk => {
+        if (
+          frog.x < trunk.x + trunk.width &&
+          frog.x + frog.size > trunk.x &&
+          frog.y < trunk.y + trunk.height &&
+          frog.y + frog.size > trunk.y
+        ){
+          onTrunk = true;
+          if (trunk.direction === 'left') {
+            frog.x -= trunk.speed; // Move left
+          } else {
+            frog.x += trunk.speed; // Move right
+          }
+        }
+      });
+
+      // Check if the frog is on a turtle
+      turtles.forEach(turtle => {
+        if (
+          frog.x < turtle.x + turtle.width &&
+          frog.x + frog.size > turtle.x &&
+          frog.y < turtle.y + turtle.height &&
+          frog.y + frog.size > turtle.y
+        ){
+          onTurtle = true;
+          if (turtle.direction === 'left') {
+            frog.x -= turtle.speed; // Move left
+          } else {
+            frog.x += turtle.speed; // Move right
+          }
+        }
+      });
+    }
+
+    //Object movement
+    function moveObject(object) {
+      if (object.direction === 'left') {
+        object.x -= object.speed;
+        if (object.x + object.width < 0) {
+          object.x = canvas.width;
+        }
+      } else {
+        object.x += object.speed;
+        if (object.x > canvas.width) {
+          object.x = -object.width;
+        }
+      }
+    }
+
+    //Collision check for car + water or turtle/trunk check
+    function checkCollision() {
+      let onTrunk = false;
+      let onTurtle = false;
+      let onEndZone = false;
+
+      cars.forEach(car => {
+        if (
+          frog.x < car.x + car.width &&
+          frog.x + frog.size > car.x &&
+          frog.y < car.y + car.height &&
+          frog.y + frog.size > car.y
+        ) {
+          console.log('Collision with a car!');
+          resetFrogPosition();
+        }
+      });
+
+      if (frog.y < grid * 6) {
+        treeTrunks.forEach(trunk => {
+          if (
+            frog.x < trunk.x + trunk.width &&
+            frog.x + frog.size > trunk.x &&
+            frog.y < trunk.y + trunk.height &&
+            frog.y + frog.size > trunk.y
+          ){
+            onTrunk = true;
+          }
+        });
+        turtles.forEach(turtle => {
+          if (
+            frog.x < turtle.x + turtle.width &&
+            frog.x + frog.size > turtle.x &&
+            frog.y < turtle.y + turtle.height &&
+            frog.y + frog.size > turtle.y
+          ){
+            onTurtle = true;
+          }
+        });
+
+        if (!onTrunk && !onTurtle) {
+          endZones.forEach(zone => {
+            if (frog.x >= zone.x && frog.x <= zone.x + zone.width && frog.y >= zone.y && frog.y <= zone.y + zone.height) {
+              onEndZone = true;
+            }
+          });
+
+          if (onEndZone) {
+            console.log('Frog reached the end zone!');
+            resetFrogPosition();
+          } else {
+            console.log('Drowned in water!');
+            resetFrogPosition();
+          }
+        }
+      }
+    }
+
+    //Frog reset to start
+    function resetFrogPosition() {
+      frog.x = grid * 6;
+      frog.y = grid * 12;
+    }
+
+    //Movement
+    document.addEventListener('keydown', function(event) {
+      switch(event.keyCode) {
+        case 37: // Left
+          frog.x -= grid;
+          break;
+        case 39: // Right
+          frog.x += grid;
+          break;
+        case 38: // Up
+          frog.y -= grid;
+          break;
+        case 40: // Down
+          frog.y += grid;
+          break;
+      }
+      draw();
+    });
+
+    //Init everything + draw interval
+    initCars();
+    initTreeTrunks();
+    initTurtles();
+    setInterval(draw, 1000 / 60);
+  </script>
+</body>
+</html>
